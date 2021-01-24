@@ -3,5 +3,6 @@ def increment(x):
 
 a=1
 b = 2 # comment
+c=3
 
-print(increment(3))
+print(increment(c))
