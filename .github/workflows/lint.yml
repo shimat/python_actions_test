@@ -19,12 +19,13 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.checks.listForRef({
+            const list = github.checks.listForRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: context.sha,
               check_name: "flake8"
-            })
+            });
+            console.log(list);
             
       - name: Setup Python
         uses: actions/setup-python@v2
