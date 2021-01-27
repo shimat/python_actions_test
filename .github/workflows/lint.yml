@@ -40,8 +40,8 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const list = await github.checks.listForRef({
-              ...github.context.repo,
-              ref: github.context.sha,              
+              ...context.repo,
+              ref: context.sha,              
               check_name: "flake8"
             });
             console.log(list);
@@ -57,6 +57,7 @@ jobs:
 
 
   foo:    
+    needs: [flake8]
     runs-on: ubuntu-latest
     steps:
       - run: |
