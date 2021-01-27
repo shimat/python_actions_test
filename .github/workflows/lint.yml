@@ -40,7 +40,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const list = await github.checks.listForRef({
-              "flake8"
+              "flake8",
               ...github.context.repo,
               ref: github.context.sha
             });
