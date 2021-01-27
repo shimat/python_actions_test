@@ -34,6 +34,17 @@ jobs:
               check_name: "flake8"
             });
             console.log(list);
+
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const list = await github.checks.listForRef({
+              "flake8"
+              ...github.context.repo,
+              ref: github.context.sha
+            });
+            console.log(list);
             
       - name: Setup Python
         uses: actions/setup-python@v2
