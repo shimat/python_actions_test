@@ -39,10 +39,11 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            const check_name = "flake8";
             const list = await github.checks.listForRef({
+              check_name,
               ...context.repo,
-              ref: context.sha,              
-              check_name: "flake8"
+              ref: context.sha
             });
             console.log(list);
             
