@@ -40,9 +40,9 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const list = await github.checks.listForRef({
-              "flake8",
               ...github.context.repo,
-              ref: github.context.sha
+              ref: github.context.sha,              
+              check_name: "flake8"
             });
             console.log(list);
             
@@ -55,3 +55,9 @@ jobs:
       - name: Install flake8
         run: pip install flake8
 
+
+  foo:    
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo foo
