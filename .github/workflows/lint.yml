@@ -2,8 +2,6 @@ name: Lint
 
 on:
   push:
-    paths:
-      - '*.py'
 
 jobs:
   flake8:
@@ -11,7 +9,44 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        
+      - name: View context attributes
+        uses: actions/github-script@v3
+        with:
+          script: console.log(context)
+
+      - name: View repo
+        uses: actions/github-script@v3
+        with:
+          script: |
+            console.log(context.repo);
+            console.log(context.repo.owner);
+            console.log(context.repo.repo);
       
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const list = await github.checks.listForRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              check_name: "flake8"
+            });
+            console.log(list);
+
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const check_name = "flake8";
+            const list = await github.checks.listForRef({
+              check_name,
+              ...context.repo,
+              ref: context.sha
+            });
+            console.log(list);
+            
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -20,10 +55,11 @@ jobs:
         
       - name: Install flake8
         run: pip install flake8
-        
-      - name: Run flake8
-        uses: suo/flake8-github-action@releases/v1
-        with:
-          checkName: 'flake8'   # NOTE: this needs to be the same as the job name
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  foo:    
+    needs: [flake8]
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo foo
