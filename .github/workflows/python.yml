@@ -1,0 +1,36 @@
+name: Python
+
+on:
+  pull_request:
+    types: [synchronize, opened]
+    paths:
+    - '**.py'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Setup flake8 annotations
+      uses: rbialon/flake8-annotations@f8c29dc2e054df26e0171b0005e99454f7db57a0  # v1
+        
+    - name: Lint with flake8
+      run: |
+        pip install flake8        
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 python/ --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 python/ --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        #FLAKE8_OUT=$(flake8 python/ --exit-zero --max-complexity=10 --max-line-length=127 --statistics)
+        #if [ -n "$FLAKE8_OUT" ]; then
+        #  echo "$FLAKE8_OUT"
+        #  return 1
+        #fi
