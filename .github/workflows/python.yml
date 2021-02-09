@@ -34,13 +34,14 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         FLAKE8_OUT=$(flake8 . --exit-zero --max-complexity=10 --max-line-length=127)
 
-        OUT=()
+        #OUT=()
         for f in $DIFF_FILES; do
-          DIFF=$(echo "$FLAKE8_OUT" | grep $f)
-          if [ -n "$DIFF" ]; then
+          echo $f
+          #DIFF=$(echo "$FLAKE8_OUT" | grep $f)
+          #if [ -n "$DIFF" ]; then
             #OUT+=("$DIFF")
-            echo "$DIFF"
-          fi
+          #  echo "$DIFF"
+          #fi
         done
         #for ((i = 0; i < ${#OUT[@]}; i++))
         #do
