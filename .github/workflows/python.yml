@@ -24,6 +24,7 @@ jobs:
         
     - name: Lint with flake8
       run: |
+        git fetch
         diffs=$(git diff remotes/origin/${{ github.base_ref }}..HEAD --diff-filter=ACDMR --name-only)
         echo $diffs
 
