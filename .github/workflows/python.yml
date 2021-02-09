@@ -25,8 +25,8 @@ jobs:
     - name: Lint with flake8
       run: |
         git fetch
-        diffs=$(git diff remotes/origin/${{ github.base_ref }}..HEAD --diff-filter=ACDMR --name-only)
-        echo $diffs
+        DIFF_FILES=$(git diff remotes/origin/${{ github.base_ref }}..HEAD --diff-filter=ACDMR --name-only)
+        echo "$DIFF_FILES"
 
         pip install flake8        
         # stop the build if there are Python syntax errors or undefined names
@@ -34,6 +34,14 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         FLAKE8_OUT=$(flake8 python/ --exit-zero --max-complexity=10 --max-line-length=127 --statistics)
+
+        for f in $DIFF_FILES; do
+          echo $f
+        done
+        for f in $DIFF_FILES; do
+          echo "$FLAKE8_OUT" | grep $f
+        done
+
         #if [ -n "$FLAKE8_OUT" ]; then
         #  echo "$FLAKE8_OUT"
         #  return 1
