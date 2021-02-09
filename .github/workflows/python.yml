@@ -43,6 +43,6 @@ jobs:
         done
 
         if [ "$DIFF_EXISTS" = "true" ]; then
-          echo "flake8 errors detected" 1>&2
+          echo "::error::!!flake8 errors detected!!"
           exit 1
         fi
