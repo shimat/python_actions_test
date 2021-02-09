@@ -26,7 +26,6 @@ jobs:
       run: |
         git fetch
         DIFF_FILES=$(git diff remotes/origin/${{ github.base_ref }}..HEAD --diff-filter=ACDMR --name-only "*.py")
-        echo "$DIFF_FILES"
 
         pip install flake8        
         # stop the build if there are Python syntax errors or undefined names
@@ -34,6 +33,15 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         FLAKE8_OUT=$(flake8 . --exit-zero --max-complexity=10 --max-line-length=127)
 
+        DIFF_EXISTS="false"
         for f in $DIFF_FILES; do
-          echo "$FLAKE8_OUT" | grep -F $f
+          FLAKE8_LINE=$(echo "$FLAKE8_OUT" | grep -F $f)
+          if [ -n "$FLAKE8_LINE" ]; then
+            echo "$FLAKE8_LINE"
+            DIFF_EXISTS="true"
+          fi
         done
+
+        if [ "$DIFF_EXISTS" = "true" ]; then
+          exit 1
+        fi
