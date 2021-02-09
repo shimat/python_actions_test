@@ -33,10 +33,12 @@ jobs:
         flake8 . --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         FLAKE8_OUT=$(flake8 . --exit-zero --max-complexity=10 --max-line-length=127)
-
+        echo
+        echo "$FLAKE8_OUT"
+        echo
         #OUT=()
         for f in $DIFF_FILES; do
-          echo "$FLAKE8_OUT"# | grep bar.py
+          #echo "$FLAKE8_OUT" | grep bar.py
           #DIFF=$(echo "$FLAKE8_OUT" | grep $f)
           #if [ -n "$DIFF" ]; then
             #OUT+=("$DIFF")
