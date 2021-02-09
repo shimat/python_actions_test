@@ -36,7 +36,7 @@ jobs:
 
         #OUT=()
         for f in $DIFF_FILES; do
-          echo $f
+          echo "$FLAKE8_OUT" | grep $f
           #DIFF=$(echo "$FLAKE8_OUT" | grep $f)
           #if [ -n "$DIFF" ]; then
             #OUT+=("$DIFF")
