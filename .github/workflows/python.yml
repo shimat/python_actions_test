@@ -36,21 +36,3 @@ jobs:
         echo
         echo "$FLAKE8_OUT"
         echo
-        #OUT=()
-        for f in $DIFF_FILES; do
-          #echo "$FLAKE8_OUT" | grep bar.py
-          #DIFF=$(echo "$FLAKE8_OUT" | grep $f)
-          #if [ -n "$DIFF" ]; then
-            #OUT+=("$DIFF")
-          #  echo "$DIFF"
-          #fi
-        done
-        #for ((i = 0; i < ${#OUT[@]}; i++))
-        #do
-        #  echo "${OUT[$i]}"
-        #done
-
-        #if [ -n "$FLAKE8_OUT" ]; then
-        #  echo "$FLAKE8_OUT"
-        #  return 1
-        #fi
