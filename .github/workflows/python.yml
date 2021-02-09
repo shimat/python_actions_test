@@ -39,6 +39,5 @@ jobs:
 
         for f in $DIFF_FILES; do
           echo $f
-          echo "[$f]"
-          echo "$FLAKE8_OUT" | grep "$f"
+          echo "$FLAKE8_OUT" | grep .github/workflows/python.yml
         done
