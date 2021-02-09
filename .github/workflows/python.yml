@@ -44,5 +44,6 @@ jobs:
 
         if [ "$DIFF_EXISTS" = "true" ]; then
           echo "::error::!!flake8 errors detected!!"
+          echo "::debug::My debug message"
           exit 1
         fi
