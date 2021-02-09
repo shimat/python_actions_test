@@ -35,12 +35,18 @@ jobs:
         flake8 . --exit-zero --max-complexity=10 --max-line-length=127 --statistics
         FLAKE8_OUT=$(flake8 python/ --exit-zero --max-complexity=10 --max-line-length=127 --statistics)
 
+        OUT=()
         for f in $DIFF_FILES; do
-          echo $f
+          DIFF=$(echo "$FLAKE8_OUT" | grep $f)
+          if [ -n "$DIFF" ]; then
+            #OUT+=("$DIFF")
+            echo "$DIFF"
+          fi
         done
-        for f in $DIFF_FILES; do
-          echo "$FLAKE8_OUT" | grep $f
-        done
+        #for ((i = 0; i < ${#OUT[@]}; i++))
+        #do
+        #  echo "${OUT[$i]}"
+        #done
 
         #if [ -n "$FLAKE8_OUT" ]; then
         #  echo "$FLAKE8_OUT"
