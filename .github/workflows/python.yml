@@ -38,5 +38,7 @@ jobs:
         echo
 
         for f in $DIFF_FILES; do
-          echo "$FLAKE8_OUT" | grep bar.py
+          echo $f
+          echo "[$f]"
+          echo "$FLAKE8_OUT" | grep "$f"
         done
