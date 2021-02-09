@@ -36,3 +36,6 @@ jobs:
         echo
         echo "$FLAKE8_OUT"
         echo
+
+        for f in $DIFF_FILES; do
+        done
