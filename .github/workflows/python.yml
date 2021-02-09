@@ -25,7 +25,7 @@ jobs:
     - name: Lint with flake8
       run: |
         git fetch
-        DIFF_FILES=$(git diff remotes/origin/${{ github.base_ref }}..HEAD "*.py" --diff-filter=ACDMR --name-only)
+        DIFF_FILES=$(git diff remotes/origin/${{ github.base_ref }}..HEAD --diff-filter=ACDMR --name-only "*.py")
         echo "$DIFF_FILES"
 
         pip install flake8        
