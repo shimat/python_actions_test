@@ -34,8 +34,12 @@ jobs:
         #flake8 . --max-complexity=10 --max-line-length=127
         FLAKE8_OUT=$(flake8 . --exit-zero --max-complexity=10 --max-line-length=127)
         set +e
-        echo "$FLAKE8_OUT" | grep -P '^.+:\d+:\d+:\s*E'
+        FLAKE8_ERRORS=$(echo "$FLAKE8_OUT" | grep -P '^.+:\d+:\d+:\s*E')
         set -e
+        if [ -n "$FLAKE8_ERRORS" ]; then
+          echo "::error::!!flake8 errors detected!!"
+          exit 1
+        fi
 
         #DIFF_EXISTS="false"
         #for f in $DIFF_FILES; do
