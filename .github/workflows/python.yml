@@ -19,31 +19,23 @@ jobs:
       with:
         python-version: 3.9
 
+    - name: Setup flake8 annotations
+      uses: rbialon/flake8-annotations@f8c29dc2e054df26e0171b0005e99454f7db57a0  # v1
+        
     - name: Lint with flake8
-      id: flake8
       run: |
+        git fetch
+        DIFF_FILES=$(git diff remotes/origin/${{ github.base_ref }}..HEAD --diff-filter=ACDMR --name-only "*.py")
+
         pip install flake8        
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         #flake8 . --max-complexity=10 --max-line-length=127
         FLAKE8_OUT=$(flake8 . --exit-zero --max-complexity=10 --max-line-length=127)
-        FLAKE8_OUT_GREP=$(echo "$FLAKE8_OUT" | grep -G "^.\+:[0-9]\+[0-9]\+: E")
-        echo "::set-output name=FLAKE8_OUT::$FLAKE8_OUT"
-        echo "::set-output name=FLAKE8_OUT_GREP::$FLAKE8_OUT_GREP"
-
-    - name: Setup flake8 annotations
-      uses: rbialon/flake8-annotations@f8c29dc2e054df26e0171b0005e99454f7db57a0  # v1
-        
-    - name: Grep
-      run: |
-        git fetch
-        DIFF_FILES=$(git diff remotes/origin/${{ github.base_ref }}..HEAD --diff-filter=ACDMR --name-only "*.py")
-
-        FLAKE8_OUT=${{ steps.flake8.outputs.FLAKE8_OUT }}
-        FLAKE8_OUT_GREP=${{ steps.flake8.outputs.FLAKE8_OUT_GREP }}
-        #echo "$FLAKE8_OUT" | grep -G "^.\+:[0-9]\+[0-9]\+: E"
-        echo "$FLAKE8_OUT_GREP"
+        set +e
+        echo "$FLAKE8_OUT" | grep -G "^.\+:[0-9]\+[0-9]\+: E"
+        set -e
 
         #DIFF_EXISTS="false"
         #for f in $DIFF_FILES; do
@@ -60,3 +52,4 @@ jobs:
         #  echo "::debug::My debug message"
         #  exit 1
         #fi
+
