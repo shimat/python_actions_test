@@ -35,7 +35,7 @@ jobs:
         FLAKE8_OUT=$(flake8 . --exit-zero --max-complexity=10 --max-line-length=127)
         echo "$FLAKE8_OUT"
         #set +e
-        FLAKE8_ERRORS=$(echo "$FLAKE8_OUT" | grep -P '^.+:\d+:\d+:\s*EX')
+        FLAKE8_ERRORS=$(echo "$FLAKE8_OUT" | grep -P '^.+:\d+:\d+:\s*EX' || true)
         #set -e
         if [ -n "$FLAKE8_ERRORS" ]; then
           echo "::error::!!flake8 errors detected!!"
