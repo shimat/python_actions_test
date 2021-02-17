@@ -32,29 +32,28 @@ jobs:
         flake8 . --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         #flake8 . --max-complexity=10 --max-line-length=127
-        FLAKE8_OUT=$(flake8 . --exit-zero --max-complexity=10 --max-line-length=127)
-        echo "$FLAKE8_OUT"
-        #set +e
-        FLAKE8_ERRORS=$(echo "$FLAKE8_OUT" | grep -P '^.+:\d+:\d+:\s*E' || true)
-        #set -e
-        if [ -n "$FLAKE8_ERRORS" ]; then
-          echo "::error::!!flake8 errors detected!!"
-          exit 1
-        fi
-
-        #DIFF_EXISTS="false"
-        #for f in $DIFF_FILES; do
-        #  FLAKE8_LINE=$(echo "$FLAKE8_OUT" | grep -F $f)
-        #  if [ -n "$FLAKE8_LINE" ]; then
-        #    echo "$FLAKE8_LINE"
-        #    DIFF_EXISTS="true"
-        #  fi
-        #done
-
-        #if [ "$DIFF_EXISTS" = "true" ]; then
+        #FLAKE8_OUT=$(flake8 . --exit-zero --max-complexity=10 --max-line-length=127)
+        #echo "$FLAKE8_OUT"
+        #FLAKE8_ERRORS=$(echo "$FLAKE8_OUT" | grep -P '^.+:\d+:\d+:\s*E' || true)
+        #if [ -n "$FLAKE8_ERRORS" ]; then
         #  echo "::error::!!flake8 errors detected!!"
-        #  echo "::warning::My warning message"
-        #  echo "::debug::My debug message"
         #  exit 1
         #fi
+
+        DIFF_EXISTS="false"
+        for f in $DIFF_FILES; do
+          #FLAKE8_LINE=$(echo "$FLAKE8_OUT" | grep -F $f)
+          FLAKE8_OUT=$(flake8 $f --exit-zero --max-complexity=10 --max-line-length=127)
+          if [ -n "$FLAKE8_OUT" ]; then
+            echo "$FLAKE8_OUT"
+            DIFF_EXISTS="true"
+          fi
+        done
+
+        if [ "$DIFF_EXISTS" = "true" ]; then
+          echo "::error::!!flake8 errors detected!!"
+          #echo "::warning::My warning message"
+          #echo "::debug::My debug message"
+          exit 1
+        fi
 
